@@ -116,7 +116,7 @@ var seckill = {
 						var inputPhone = $('#killPhoneKey').val();
 						if(seckill.validatePhone(inputPhone)){
 							//电话写入cookie
-							$.cookie('killPhone',inputPhone,{expires:7,path:'/seckill'});
+							$.cookie('killPhone',inputPhone,{expires:7,path:'/seckillpro/seckill'});
 							//刷新页面
 							window.location.reload();
 						}else{
