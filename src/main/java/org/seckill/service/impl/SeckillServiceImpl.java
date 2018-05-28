@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.seckill.dao.SeckillDao;
 import org.seckill.dao.SuccessKilledDao;
+import org.seckill.dao.cache.RedisDao;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
@@ -28,9 +29,12 @@ public class SeckillServiceImpl implements SeckillService {
 
 	@Autowired
 	private SeckillDao seckillDao;
-
+	
 	@Autowired
 	private SuccessKilledDao successKilledDao;
+	
+	@Autowired
+	private RedisDao redisDao;
 
 	// MD5盐值
 	private final String salt = "qazwsxedc123";
@@ -47,9 +51,16 @@ public class SeckillServiceImpl implements SeckillService {
 
 	@Override
 	public Exposer exportSeckillUrl(Long seckillId) {
-		Seckill seckill = getById(seckillId);
-		if (seckill == null) {
-			return new Exposer(false, seckillId);
+		//优化点 缓存优化
+		Seckill seckill = redisDao.getSeckill(seckillId);
+		if(seckill == null){
+			//访问数据库
+			seckill = getById(seckillId);
+			if (seckill == null) {
+				return new Exposer(false, seckillId);
+			}else{
+				redisDao.putSeckill(seckill);
+			}
 		}
 		Date startTime = seckill.getStartTime();
 		Date endTime = seckill.getEndTime();
