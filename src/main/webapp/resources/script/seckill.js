@@ -4,13 +4,13 @@ var seckill = {
 		//封装秒杀相关ajax的url
 		URL:{
 			now:function(){
-				return '/seckill/time/now';
+				return '/seckillpro/seckill/time/now';
 			},
 			exposer:function(seckillId){
-				return '/seckill/'+seckillId+'/exposer';
+				return '/seckillpro/seckill/'+seckillId+'/exposer';
 			},
 			execution:function(seckillId,md5){
-				return '/seckill/'+seckillId+'/'+md5+'/execution';
+				return '/seckillpro/seckill/'+seckillId+'/'+md5+'/execution';
 			}
 		},
 		handleSeckill:function(seckillId,node){
