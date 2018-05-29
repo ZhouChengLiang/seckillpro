@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seckill.dao.SeckillDao;
 import org.seckill.dao.cache.RedisDao;
-import org.seckill.dto.Exposer;
 import org.seckill.entity.Seckill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

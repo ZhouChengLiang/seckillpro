@@ -11,8 +11,6 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
 
 public class RedisDao {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
