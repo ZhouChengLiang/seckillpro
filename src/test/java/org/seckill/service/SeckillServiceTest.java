@@ -75,6 +75,7 @@ public class SeckillServiceTest {
 				logger.error(e.getMessage());
 			}
 		}else{
+			//ÃëÉ±Î´¿ªÆô
 			logger.warn("exposer={}",exposer);
 		}
 	}
@@ -83,5 +84,24 @@ public class SeckillServiceTest {
 		String base = seckillId +" "+salt;
 		String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
 		return md5;
+	}
+	
+	@Test
+	public void testExecuteSeckillProcedure(){
+		Long seckillId = 1000L;
+		Long phone = 15677665432L;
+		Exposer exposer = seckillService.exportSeckillUrl(seckillId);
+		if(exposer.isExposed()){
+			logger.info("exposer={}",exposer);
+			String md5 = exposer.getMd5();
+			try {
+				SeckillExecution seckillExecution = seckillService.executeSeckillProcedure(seckillId, phone, md5);
+				logger.info("result={}",seckillExecution);
+			} catch (RepeatKillException e) {
+				logger.error(e.getMessage());
+			}catch (SeckillCloseException e) {
+				logger.error(e.getMessage());
+			}
+		}
 	}
 }
