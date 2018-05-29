@@ -1,5 +1,6 @@
 package org.seckill.dao.cache;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.seckill.entity.Seckill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
 public class RedisDao {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -17,8 +20,8 @@ public class RedisDao {
 	private RuntimeSchema<Seckill> schema = RuntimeSchema.createFrom(Seckill.class);
 	
 	
-	public RedisDao(String host,int port){
-		jedisPool = new JedisPool(host, port);
+	public RedisDao(GenericObjectPoolConfig poolConfig,String host,int port,int timeout,String password){
+		jedisPool = new JedisPool(poolConfig,host, port,timeout,password);
 	}
 	
 	public Seckill getSeckill(Long seckillId){

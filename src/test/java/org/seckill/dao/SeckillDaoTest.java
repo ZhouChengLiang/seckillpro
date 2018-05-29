@@ -6,6 +6,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seckill.dao.SeckillDao;
+import org.seckill.dao.cache.RedisDao;
+import org.seckill.dto.Exposer;
 import org.seckill.entity.Seckill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,6 +24,9 @@ public class SeckillDaoTest {
 	
 	@Autowired
 	private SeckillDao seckillDao;
+	
+	@Autowired
+	private RedisDao redisDao;
 	
 	@Test
 	public void testQueryById() throws Exception{
@@ -43,6 +48,27 @@ public class SeckillDaoTest {
 		Date killTime = new Date();
 		int updateCount = seckillDao.reduceNumber(seckillId, killTime);
 		System.out.println("updateCount>>>"+updateCount);
+	}
+	
+	@Test
+	public void testPutSeckill(){
+		Long seckillId = 1300L;
+		Seckill seckill = redisDao.getSeckill(seckillId);
+		if(seckill == null){
+			seckill = seckillDao.queryById(seckillId);
+			if (seckill == null) {
+				System.out.println("真的是没有记录~~~");
+			}else{
+				redisDao.putSeckill(seckill);
+			}
+		}
+	}
+	
+	@Test
+	public void testGetSeckill(){
+		Long seckillId = 1000L;
+		Seckill seckill = redisDao.getSeckill(seckillId);
+		System.out.println(seckill);
 	}
 	
 }

@@ -88,17 +88,20 @@ public class SeckillServiceImpl implements SeckillService {
 	public SeckillExecution executeSeckill(Long seckillId, Long userPhone, String md5)
 			throws SeckillException, SeckillCloseException, RepeatKillException {
 		if (md5 == null || !md5.equals(getMD5(seckillId))) {
+			logger.error(SeckillStatEnum.DATA_REWRITE.getStateInfo());
 			throw new SeckillException(SeckillStatEnum.DATA_REWRITE.getStateInfo());
 		}
 		// Ö´ÐÐÃëÉ±Âß¼­ ¼õ¿â´æ,¼ÇÂ¼¹ºÂòÐÐÎª
 		Date killTime = new Date();
 		int updateCount = seckillDao.reduceNumber(seckillId, killTime);
 		if (updateCount <= 0) {
+			logger.error(SeckillStatEnum.END.getStateInfo());
 			throw new SeckillCloseException(SeckillStatEnum.END.getStateInfo());
 		} else {
 			// ¼ÇÂ¼¹ºÂòÐÐÎª
 			int insertCount = successKilledDao.insertSuccessKilled(seckillId, userPhone);
 			if (insertCount <= 0) {
+				logger.error(SeckillStatEnum.REPEAT_KILL.getStateInfo());
 				throw new RepeatKillException(SeckillStatEnum.REPEAT_KILL.getStateInfo());
 			} else {
 				// ÃëÉ±³É¹¦
