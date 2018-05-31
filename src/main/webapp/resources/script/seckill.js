@@ -35,9 +35,7 @@ var seckill = {
 							//2.发送秒杀请求,执行秒杀
 							$.post(killUrl,{},function(result){
 								if(result && result['success']){
-									console.log(result);
 									var killResult = result['data'];
-									console.log(killResult);
 									var state = killResult['state'];
 									var stateInfo = killResult['stateInfo'];
 									//显示秒杀结果
@@ -72,7 +70,7 @@ var seckill = {
 			//时间的判断
 			if(nowTime > endTime){
 				//秒杀结束
-				seckillBox.html('秒杀结束!');
+				seckillBox.hide().html('秒杀结束!').show();
 			}else if(nowTime < startTime){
 				//秒杀未开始,计时
 				var killTime = new Date(startTime + 1000);
@@ -97,7 +95,6 @@ var seckill = {
 				//规划交互流程
 				//在Cookie中查找手机号
 				var killPhone = $.cookie('killPhone');
-				console.log("killPhone>>>>>>"+killPhone);
 				var startTime = params['startTime'];
 				var endTime = params['endTime'];
 				var seckillId = params['seckillId'];
